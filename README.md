@@ -12,6 +12,13 @@ uv sync
 
 ## Run
 
+- **Test chat iterator**: run the mock chat iterator and log yielded events to stdout (stops after 10 events):
+
+```bash
+uv sync
+uv run python scripts/test_chat_iterator.py
+```
+
 - **Daemon**: start the bot process (details TBD).
 - **CLI**: subcommands to start/stop bot, join live channel, status, tail logs, manage scheduled messages, manage commands, etc. CLI communicates with the daemon; it does not run the bot in-process.
 
