@@ -15,3 +15,7 @@ env/
 .vscode/
 .idea/
 .ipynb_checkpoints
+
+# Google credentials
+credentials.json
+token.json
