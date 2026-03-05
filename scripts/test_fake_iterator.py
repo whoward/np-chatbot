@@ -4,7 +4,7 @@ import asyncio
 
 import structlog
 
-from np_chatbot.youtube.chat import mock_chat_iterator
+from np_chatbot.faketube import mock_chat_iterator
 
 structlog.configure(
     processors=[
