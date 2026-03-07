@@ -1,7 +1,7 @@
 import grpc
 import time
 
-from ..logging import get_logger
+from ...logging import get_logger
 
 from .chat_stream_client import ChatStreamClient, EndOfStream
 

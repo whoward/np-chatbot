@@ -3,7 +3,7 @@ import asyncio
 import signal
 
 from np_chatbot.logging import get_logger
-from np_chatbot.youtube.iterator import Iterator
+from np_chatbot.google.chat.iterator import Iterator
 
 from google.protobuf import json_format
 
@@ -15,7 +15,7 @@ async def main(video_id):
     # handle the interrupt signal (Ctrl+C) by interrupting the iterator
     # to cause it to eventually stop consuming the chat stream
     def handle_signal(sig, frame):
-        print("\nSIGINT received! Stopping chat consumer...")
+        log.info("SIGINT received! Stopping chat consumer...")
         iterator.interrupt()
 
     signal.signal(signal.SIGINT, handle_signal)

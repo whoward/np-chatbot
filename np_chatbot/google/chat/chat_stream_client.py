@@ -7,9 +7,9 @@ from googleapiclient.discovery import build
 from google.auth.transport.requests import Request as AuthRequest
 from jsonpath import pointer
 
-from ..logging import get_logger
+from ...logging import get_logger
 
-from .credentials_manager import CredentialsManager
+from ..credentials_manager import CredentialsManager
 
 from .proto import stream_list_pb2, stream_list_pb2_grpc
 

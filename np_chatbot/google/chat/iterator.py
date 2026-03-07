@@ -4,7 +4,7 @@ import signal
 
 from .stream import Stream, END_OF_STREAM
 
-from ..logging import get_logger
+from ...logging import get_logger
 
 log = get_logger(__name__)
 
