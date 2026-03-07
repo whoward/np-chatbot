@@ -23,7 +23,7 @@ class AsyncQueueBridge:
         return await self._async_queue.get()
 
 class Iterator:
-    def __init__(self, live_chat_id, next_page_token=None, backoff_sleep_seconds=15.0):
+    def __init__(self, video_id, next_page_token=None, backoff_sleep_seconds=15.0):
         self.started = False
         self.queue = AsyncQueueBridge()
         self.interrupt_event = threading.Event()
@@ -31,7 +31,7 @@ class Iterator:
             queue = self.queue,
             interrupt_event = self.interrupt_event, 
             next_page_token = next_page_token, 
-            live_chat_id = live_chat_id, 
+            video_id = video_id, 
             backoff_sleep_seconds = backoff_sleep_seconds, 
         )
 

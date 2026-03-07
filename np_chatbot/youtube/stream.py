@@ -3,20 +3,20 @@ import time
 
 from ..logging import get_logger
 
-from .chat_stream_client import ChatStreamClient
+from .chat_stream_client import ChatStreamClient, EndOfStream
 
 END_OF_STREAM = object()
 
 log = get_logger(__name__)
 
 class Stream:
-    def __init__(self, queue, interrupt_event, next_page_token, live_chat_id, backoff_sleep_seconds):
+    def __init__(self, queue, interrupt_event, next_page_token, video_id, backoff_sleep_seconds):
         self.queue = queue
         self.interrupt_event = interrupt_event
         self.next_page_token = next_page_token
         self.backoff_sleep_seconds = backoff_sleep_seconds
         
-        self.client = ChatStreamClient(live_chat_id)
+        self.client = ChatStreamClient(video_id)
     
     def run(self):
         try:
@@ -29,7 +29,11 @@ class Stream:
 
     def _do_run(self):
         while self._should_continue_streaming:
-            self._receive_from_stream()
+            try:
+                self._receive_from_stream()
+            except EndOfStream as e:
+                log.info("end of stream detected", reason=str(e))
+                break
             
             log.debug("sleeping to allow messages to accumulate", duration=self.backoff_sleep_seconds)
             self.interrupt_event.wait(self.backoff_sleep_seconds)
