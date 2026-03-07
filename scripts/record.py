@@ -1,11 +1,10 @@
 import sys
 import asyncio
 import signal
+import json
 
 from np_chatbot.logging import get_logger
 from np_chatbot.google.chat.iterator import Iterator
-
-from google.protobuf import json_format
 
 async def main(video_id):
     log = get_logger(__name__)
@@ -22,8 +21,7 @@ async def main(video_id):
 
     with open(f"stream-{video_id}.jsonl", "a", buffering=1) as f:
         async for message in iterator:
-            serialized = json_format.MessageToJson(message, indent=0).replace('\n','').replace('\r','')
-            print(serialized, file=f)
+            print(json.dumps(message), file=f)
 
 
 if __name__ == "__main__":

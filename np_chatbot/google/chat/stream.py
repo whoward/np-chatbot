@@ -1,6 +1,8 @@
 import grpc
 import time
 
+from google.protobuf.json_format import MessageToDict
+
 from ...logging import get_logger
 
 from .chat_stream_client import ChatStreamClient, EndOfStream
@@ -46,7 +48,9 @@ class Stream:
             log.debug("received items from stream", item_count=len(response.items))
             
             for item in response.items:
-                self.queue.put(item)
+                serialized = MessageToDict(item, preserving_proto_field_name=True)
+
+                self.queue.put(serialized)
 
             self.next_page_token = response.next_page_token
         
