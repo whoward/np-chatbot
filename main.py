@@ -22,6 +22,13 @@ def parse_arguments():
         help="Path to a file where the chat stream will be recorded"
     )
 
+    # Optional flag for specifying next_page_token
+    parser.add_argument(
+        "--next-page-token",
+        metavar="TOKEN",
+        help="Cursor value for the chat iterator to pick up where it left off"
+    )
+
     # Mutually exclusive group for Replay vs Video
     # setting required=True ensures at least one is provided
     group = parser.add_mutually_exclusive_group(required=True)
@@ -40,8 +47,11 @@ def parse_arguments():
 
     return parser.parse_args()
 
-def build_chat_iterator(video_id):
-    iterator = ChatIterator(video_id)
+def build_chat_iterator(args):
+    iterator = ChatIterator(
+        video_id=args.video,
+        next_page_token=args.next_page_token,
+    )
     
     # handle the interrupt signal (Ctrl+C) by interrupting the iterator
     # to cause it to eventually stop consuming the chat stream
@@ -59,7 +69,7 @@ async def main(args):
         io = await aiofiles.open(args.replay, "r")
         iterator = aiter(JSONLIterator(io))
     else:
-        iterator = aiter(build_chat_iterator(args.video))
+        iterator = aiter(build_chat_iterator(args))
 
     # if the user has specified they want to record the stream add a recording iterator
     if args.record:
