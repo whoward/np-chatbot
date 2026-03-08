@@ -61,12 +61,12 @@ async def main(args):
     else:
         iterator = aiter(build_chat_iterator(args.video))
 
+    # if the user has specified they want to record the stream add a recording iterator
     if args.record:
         iterator = aiter(RecordingIterator(iterator, args.record))
 
+    # add a event parsing iterator to parse low level events into high level events
     iterator = aiter(EventIterator(iterator))
-
-    # print(iterator)
 
     # iterate through the iterator (don't do anything with the message)
     async for message in iterator:
