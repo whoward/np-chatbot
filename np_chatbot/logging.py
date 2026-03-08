@@ -2,6 +2,8 @@ import structlog
 import sys
 import os
 
+from .settings import get_settings
+
 processors = [
     structlog.processors.add_log_level,
     structlog.processors.StackInfoRenderer(),
@@ -9,7 +11,7 @@ processors = [
     structlog.processors.TimeStamper(fmt="iso")
 ]
 
-log_level = os.environ.get('LOG_LEVEL', 'INFO').upper()
+log_level = get_settings().log_level.upper()
 
 if sys.stderr.isatty():
     processors.append(structlog.dev.ConsoleRenderer())

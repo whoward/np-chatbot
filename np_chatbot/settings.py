@@ -12,6 +12,8 @@ from pydantic_settings import (
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(toml_file="config.toml")
 
+    log_level: str = "info"
+
     question_prefix_regex: re.Pattern = re.compile("^\\s*!question\\s*")
     command_prefix_regex: re.Pattern = re.compile("^\\s*!(?P<command>\\S+)\\s*")
 
