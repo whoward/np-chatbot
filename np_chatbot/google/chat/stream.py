@@ -48,7 +48,10 @@ class Stream:
             log.debug("received items from stream", item_count=len(response.items))
             
             for item in response.items:
-                serialized = MessageToDict(item, preserving_proto_field_name=True)
+                serialized = MessageToDict(item, preserving_proto_field_name=False)
+
+                # add the videoId key to each serialized object
+                serialized["videoId"] = self.client.video_id
 
                 self.queue.put(serialized)
 

@@ -19,3 +19,6 @@ env/
 # Google credentials
 credentials.json
 token.json
+
+# configuration file
+config.toml
