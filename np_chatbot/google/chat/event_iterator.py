@@ -109,7 +109,6 @@ def parse(event):
             return result
 
     return None
-    
 
 class EventIterator:
     def __init__(self, iterator):
@@ -132,7 +131,7 @@ class EventIterator:
 
     async def __anext__(self):
         while True:
-            next_value = await next(self.iterator)
+            next_value = await anext(self.iterator)
 
             parsed = parse(next_value)
 
