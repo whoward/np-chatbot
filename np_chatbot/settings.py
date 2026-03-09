@@ -14,7 +14,7 @@ class Settings(BaseSettings):
 
     log_level: str = "info"
 
-    question_prefix_regex: re.Pattern = re.compile("^\\s*!question\\s*")
+    question_prefix_regex: re.Pattern = re.compile("^\\s*!ask\\s*")
     command_prefix_regex: re.Pattern = re.compile("^\\s*!(?P<command>\\S+)\\s*")
 
     @field_validator('command_prefix_regex', mode='after')
