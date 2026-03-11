@@ -58,7 +58,7 @@ class Stream:
             self.next_page_token = response.next_page_token
         
         duration = time.perf_counter() - start_time
-        log.debug("end of stream request", duration_seconds=round(duration, 2))
+        log.debug("end of stream request", duration_seconds=round(duration, 2), next_page_token=self.next_page_token)
 
     @property
     def _should_continue_streaming(self):
