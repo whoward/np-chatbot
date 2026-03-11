@@ -13,7 +13,8 @@ from ..logging import get_logger
 log = get_logger(__name__)
 
 SCOPES = [
-    'https://www.googleapis.com/auth/youtube.force-ssl'
+    'https://www.googleapis.com/auth/youtube.force-ssl',
+    'https://www.googleapis.com/auth/drive.file',
 ]
 
 @lru_cache(maxsize=None)

@@ -9,6 +9,8 @@ from np_chatbot.recording_iterator import RecordingIterator
 from np_chatbot.jsonl_iterator import JSONLIterator
 from np_chatbot.google.chat.iterator import Iterator as ChatIterator
 from np_chatbot.google.chat.event_iterator import EventIterator
+from np_chatbot.google.sheets.workbook_iterator import WorkbookIterator
+
 
 log = get_logger(__name__)
 
@@ -31,18 +33,34 @@ def parse_arguments():
 
     # Mutually exclusive group for Replay vs Video
     # setting required=True ensures at least one is provided
-    group = parser.add_mutually_exclusive_group(required=True)
+    source_group = parser.add_mutually_exclusive_group(required=True)
     
-    group.add_argument(
+    source_group.add_argument(
         "--replay", 
         metavar="PATH", 
         help="Replays a previous recording from the specified path"
     )
     
-    group.add_argument(
+    source_group.add_argument(
         "--video", 
         metavar="VIDEO_ID", 
         help="Specifies a video ID to run"
+    )
+
+    # Mutually exclusive group for spreadsheet-id and spreadsheet-name
+    # setting required=False means neither needs to be set
+    spreadsheet_group = parser.add_mutually_exclusive_group(required=False)
+
+    spreadsheet_group.add_argument(
+        "--spreadsheet-id",
+        metavar="SPREADSHEET_ID",
+        help="ID of the spreadsheet to push data to"
+    )
+
+    spreadsheet_group.add_argument(
+        "--spreadsheet-name",
+        metavar="NAME",
+        help="Name of the spreadsheet to create"
     )
 
     return parser.parse_args()
@@ -58,6 +76,7 @@ def build_chat_iterator(args):
     def handle_signal(sig, frame):
         log.info("SIGINT received! Stopping chat consumer...")
         iterator.interrupt()
+        # TODO: find a way to wait up to 30 seconds before running sys.exit(0)
 
     signal.signal(signal.SIGINT, handle_signal)
 
@@ -78,9 +97,17 @@ async def main(args):
     # add a event parsing iterator to parse low level events into high level events
     iterator = aiter(EventIterator(iterator))
 
+    # if either a spreadsheet_id or spreadsheet_name is specified then add a spreadsheet iterator to the chain
+    if args.spreadsheet_id or args.spreadsheet_name:
+        iterator = aiter(WorkbookIterator(
+            inner_iterator=iterator, 
+            workbook_id=args.spreadsheet_id, 
+            workbook_name=args.spreadsheet_name
+        ))
+
     # iterate through the iterator (don't do anything with the message)
     async for message in iterator:
-        print(message.model_dump_json())
+        pass
 
 if __name__ == "__main__":
     args = parse_arguments()
