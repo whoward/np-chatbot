@@ -9,8 +9,8 @@ from np_chatbot.recording_iterator import RecordingIterator
 from np_chatbot.jsonl_iterator import JSONLIterator
 from np_chatbot.google.chat.iterator import Iterator as ChatIterator
 from np_chatbot.google.chat.event_iterator import EventIterator
+from np_chatbot.google.chat.reply_iterator import ReplyIterator
 from np_chatbot.google.sheets.workbook_iterator import WorkbookIterator
-
 
 log = get_logger(__name__)
 
@@ -29,6 +29,13 @@ def parse_arguments():
         "--next-page-token",
         metavar="TOKEN",
         help="Cursor value for the chat iterator to pick up where it left off"
+    )
+
+    parser.add_argument(
+        "--silent",
+        help="When set the bot will never post replies to user activity in chat",
+        action="store_true",
+        default=False
     )
 
     # Mutually exclusive group for Replay vs Video
@@ -105,8 +112,12 @@ async def main(args):
             workbook_name=args.spreadsheet_name
         ))
 
+    if not args.silent and args.replay is None:
+        iterator = aiter(ReplyIterator(iterator))
+
     # iterate through the iterator (don't do anything with the message)
     async for message in iterator:
+        print(message.model_dump_json())
         pass
 
 if __name__ == "__main__":

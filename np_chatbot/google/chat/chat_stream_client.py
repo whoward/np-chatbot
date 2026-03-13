@@ -4,7 +4,6 @@ import random
 
 from dataclasses import dataclass
 from googleapiclient.discovery import build
-from google.auth.transport.requests import Request as AuthRequest
 from jsonpath import pointer
 
 from ...logging import get_logger

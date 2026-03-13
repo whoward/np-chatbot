@@ -17,6 +17,7 @@ def parse_member_milestone(ev):
     return MemberMilestone(
         message_id = p(ev, "/id"),
         video_id = p(ev, "/videoId"),
+        live_chat_id = p(ev, "/liveChatId"),
         timestamp = p(ev, "/snippet/publishedAt"),
         author_id = p(ev, "/authorDetails/channelId"),
         author_name = p(ev, "/authorDetails/displayName"),
@@ -32,6 +33,7 @@ def parse_user_banned_event(ev):
     return UserBannedEvent(
         message_id = p(ev, "/id"),
         video_id = p(ev, "/videoId"),
+        live_chat_id = p(ev, "/liveChatId"),
         timestamp = p(ev, "/snippet/publishedAt"),
         moderator_id = p(ev, "/authorDetails/channelId"),
         moderator_name = p(ev, "/authorDetails/displayName"),
@@ -59,6 +61,7 @@ def parse_chat_command(ev):
     return ChatCommandInvocation(
         message_id = p(ev, "/id"),
         video_id = p(ev, "/videoId"),
+        live_chat_id = p(ev, "/liveChatId"),
         timestamp = p(ev, "/snippet/publishedAt"),
         author_id = p(ev, "/authorDetails/channelId"),
         author_name = p(ev, "/authorDetails/displayName"),
@@ -83,6 +86,7 @@ def parse_chat_question(ev):
     return ChatQuestion(
         message_id = p(ev, "/id"),
         video_id = p(ev, "/videoId"),
+        live_chat_id = p(ev, "/liveChatId"),
         timestamp = p(ev, "/snippet/publishedAt"),
         author_id = p(ev, "/authorDetails/channelId"),
         author_name = p(ev, "/authorDetails/displayName"),

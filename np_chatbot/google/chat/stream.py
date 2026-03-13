@@ -50,8 +50,9 @@ class Stream:
             for item in response.items:
                 serialized = MessageToDict(item, preserving_proto_field_name=False)
 
-                # add the videoId key to each serialized object
+                # add the videoId and liveChatId key to each serialized object
                 serialized["videoId"] = self.client.video_id
+                serialized["liveChatId"] = self.client.live_chat_id
 
                 self.queue.put(serialized)
 

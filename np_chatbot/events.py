@@ -4,6 +4,7 @@ from datetime import datetime
 class BaseMessage(BaseModel):
     message_id: str
     video_id: str
+    live_chat_id: str
     timestamp: datetime
 
     @computed_field
